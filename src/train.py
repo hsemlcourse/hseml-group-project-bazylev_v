@@ -40,7 +40,7 @@ def train():
     os.makedirs('models', exist_ok=True)
     joblib.dump(best_model, 'models/best_model.pkl')
     joblib.dump(scaler, 'models/scaler.pkl')
-    print(f"Лучшая модель сохранена")
+    print("Лучшая модель сохранена")
 
 if __name__ == "__main__":
     train()
