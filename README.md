@@ -1,87 +1,75 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/kOqwghv0)
-# ML Project — [Название проекта]
+# ML Project — Астрономическая классификация объектов SDSS
 
-**Студент:** [ФИО / Student ID]
+**Студент:** Базылев Вячеслав Дмитриевич
 
-**Группа:** [Группа]
+**Группа:** БИВ236
 
 
 ## Оглавление
 
 1. [Описание задачи](#описание-задачи)
 2. [Структура репозитория](#структура-репозитория)
-3. [Запуски](#быстрый-старт)
+3. [Запуск](#запуск)
 4. [Данные](#данные)
 5. [Результаты](#результаты)
-7. [Отчёт](#отчёт)
-
+6. [Отчёт](#отчёт)
 
 ## Описание задачи
 
-<!-- Кратко опишите задачу: что предсказываем, какой датасет, метрика качества -->
+**Задача:** Мультиклассовая классификация космических объектов на три категории: звезды (STAR), галактики (GALAXY) и квазары (QSO).
 
-**Задача:** [Классификация / Регрессия / Кластеризация / ...]
+**Датасет:** Sloan Digital Sky Survey (SDSS) DR14. Включает фотометрические данные (фильтры u, g, r, i, z) и параметры красного смещения (redshift).
 
-**Датасет:** [Название и источник датасета]
-
-**Целевая метрика:** [Accuracy / F1 / RMSE / ...]
-
+**Целевая метрика:** **F1-macro**. Выбрана из-за возможного дисбаланса классов, чтобы одинаково качественно учитывать точность предсказания как массовых (галактики), так и редких объектов (квазары).
 
 ## Структура репозитория
-Опишите структуру проекта, сохранив при этом верхнеуровневые папки. Можно добавить новые при необходимости.
-```
 .
+├── README.md
 ├── data
-│   ├── processed               # Очищенные и обработанные данные
-│   └── raw                     # Исходные файлы
-├── models                      # Сохранённые модели 
+│   ├── processed
+│   │   ├── test.csv
+│   │   ├── train.csv
+│   │   └── val.csv
+│   └── raw
+│       ├── Skyserver_SQL2_27_2018 6_51_39 PM.csv
+│       └── Skyserver_SQL2_27_2018 6_51_39 PM.csv.zip
+├── models
+│   ├── best_model.pkl
+│   └── scaler.pkl
 ├── notebooks
-│   ├── 01_eda.ipynb            # EDA
-│   ├── 02_baseline.ipynb       # Baseline-модель
-│   └── 03_experiments.ipynb    # Эксперименты и ablation study
-├── presentation                # Презентация для защиты
+├── presentation
+│   └── README.md
 ├── report
-│   ├── images                  # Изображения для отчёта
-│   └── report.md               # Финальный отчёт
-├── src
-│   ├── preprocessing.py        # Предобработка данных
-│   └── modeling.py             # Обучение и оценка моделей
-├── tests
-│   └── test.py                 # Тесты пайплайна
+│   └── report.md
 ├── requirements.txt
-└── README.md
-```
+├── src
+│   ├── __init__.py
+│   ├── modeling.py
+│   └── preprocessing.py
+└── tests
+    ├── __pycache__
+    │   └── test.cpython-311-pytest-9.0.2.pyc
+    └── test.py
 
 ## Запуск
-
-Этот блок замените способом запуска вашего сервиса.
 ```bash
-# 1. Клонировать репозиторий
-git clone <url>
-cd <repo-name>
-
-# 2. Создать виртуальное окружение
-python -m venv .venv
-source .venv/bin/activate   # Linux/macOS
-# .venv\Scripts\activate    # Windows
-
-# 3. Установить зависимости
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-```
 
+python3 src/preprocessing.py
+python3 src/modeling.py
+pytest tests/test.py
+```
 ## Данные
 - `data/raw/` — исходные файлы
 - `data/processed/` — предобработанные данные
 
-
 ## Результаты
-Здесь коротко выпишите результаты.
-| Модель | [Метрика 1] | [Метрика 2] | Примечание |
-|--------|-------------|-------------|------------|
-| Baseline | — | — | |
-| Лучшая модель | — | — | |
-
-
+Модель	F1-macro	Accuracy	Примечание
+Baseline (LogReg)	0.9754	0.9790	Точка отсчета
+XGBoost + Optuna	0.9901	0.9920	Финальная модель (CP2)
 ## Отчёт
 
 Финальный отчёт: [`report/report.md`](report/report.md)
